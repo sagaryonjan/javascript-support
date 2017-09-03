@@ -1,215 +1,69 @@
 var supportHelper = function () {
-
-    this.extend = new extend();
-    this.search = new search();
-
-    this.searchUrl = function (url, searchObj) {
-
-        return this.search.urlGenerator(url, searchObj).run();
-
-    };
-
-    this.validateForm = function (handler, rules, messages) {
-
-        return this.extend.validate(handler, rules, messages);
-
-    };
-
-    this.print = function (result) {
-
-        console.log(result);
-        return false;
-
-    };
-
-    this.ajaxPost = function (url, data) {
-
-        return this.extend.ajax(url, data, 'POST')
-
-    };
-
-    this.ajaxGet = function (url, data) {
-
-        return this.extend.ajax(url, data, 'GET')
-
-    };
-
-    this.redirect = function (url) {
-
-        return  this.extend.redirect(url);
-
-    };
-
-};
-
-var search = function () {
-
-    this.url = '';
-    this.extend = new extend();
-
-    this.urlGenerator = function ( url, searchObj ) {
-
-        var query = '';
-
-        $.each(searchObj, function (field, value) {
-
-            if (value !== '') {
-
-                if (query == '') {
-
-                    query = '?' + field + '=' + value;
-
-                } else {
-
-                    query = query + '&' + field + '=' + value;
-
-                }
-            }
-
-        });
-
-        this.url = url + query;
-
-        return this;
-
-    };
-
-    this.run = function () {
-
-       return this.extend.redirect(this.url);
-
-    };
-
-
-};
-
-
-
-var fieldValue = function () {
-
-    this.checkbox = function (element) {
-
-        if (element.is(":checked")) {
-
-            return 1;
-
-        } else {
-
-            return 0;
-
-        }
-
-    };
-
-};
-
-
-var extend = function () {
-
-    this.urlGenerator = function (url, searchObj) {
-
-        var query = '';
-
-        $.each(searchObj, function (field, value) {
-
-            if (value !== '') {
-
-                if (query == '') {
-
-                    query = '?' + field + '=' + value;
-
-                } else {
-
-                    query = query + '&' + field + '=' + value;
-
-                }
-            }
-
-        });
-
-        return url + query;
-
-    };
-
-    this.validate = function (handler, rules, messages) {
-
-        return $("#" + handler).validate({
+    this.extend = new extend, this.search = new search, this.searchUrl = function (e, t) {
+        return this.search.urlGenerator(e, t).run()
+    }, this.validateForm = function (e, t, r) {
+        return this.extend.validate(e, t, r)
+    }, this.print = function (e) {
+        return console.log(e), !1
+    }, this.ajaxPost = function (e, t) {
+        return this.extend.ajax(e, t, "POST")
+    }, this.ajaxGet = function (e, t) {
+        return this.extend.ajax(e, t, "GET")
+    }, this.redirect = function (e) {
+        return this.extend.redirect(e)
+    }
+}, search = function () {
+    this.url = "", this.extend = new extend, this.urlGenerator = function (e, t) {
+        var r = "";
+        return $.each(t, function (e, t) {
+            "" !== t && (r = "" == r ? "?" + e + "=" + t : r + "&" + e + "=" + t)
+        }), this.url = e + r, this
+    }, this.run = function () {
+        return this.extend.redirect(this.url)
+    }
+}, fieldValue = function () {
+    this.checkbox = function (e) {
+        return e.is(":checked") ? 1 : 0
+    }
+}, extend = function () {
+    this.urlGenerator = function (e, t) {
+        var r = "";
+        return $.each(t, function (e, t) {
+            "" !== t && (r = "" == r ? "?" + e + "=" + t : r + "&" + e + "=" + t)
+        }), e + r
+    }, this.validate = function (e, t, r) {
+        return $("#" + e).validate({
             errorElement: "div",
             ignore: [],
-            debug: false,
-            errorClass: 'help-block',
-            focusInvalid: false,
-            rules: rules,
-            messages: messages,
-            errorPlacement: function (error, element) {
-                // Add the `help-block` class to the error element
-                error.addClass("note-error");
-
-                if (element.prop("type") == "radio") {
-                    error.insertAfter(element.parents(".inline-group"));
-                } else {
-                    error.insertAfter(element);
-                }
+            debug: !1,
+            errorClass: "help-block",
+            focusInvalid: !1,
+            rules: t,
+            messages: r,
+            errorPlacement: function (e, t) {
+                e.addClass("note-error"), "radio" == t.prop("type") ? e.insertAfter(t.parents(".inline-group")) : e.insertAfter(t)
             },
-            highlight: function (element, errorClass, validClass) {
-                $(element).parents(".input, .select, .radio, .textarea").addClass("state-error").removeClass("has-success");
+            highlight: function (e, t, r) {
+                $(e).parents(".input, .select, .radio, .textarea").addClass("state-error").removeClass("has-success")
             },
-            unhighlight: function (element, errorClass, validClass) {
-                $(element).parents(".input, .select, .radio, .textarea").addClass("has-success").removeClass("state-error");
+            unhighlight: function (e, t, r) {
+                $(e).parents(".input, .select, .radio, .textarea").addClass("has-success").removeClass("state-error")
             },
-            invalidHandler: function (e, validator) {
-                $(".alert-danger").show();
-                if (validator.errorList.length)
-                    $('#myTab1 a[href="#' + $(validator.errorList[0].element).closest(".tab-pane").attr('id') + '"]').tab('show');
+            invalidHandler: function (e, t) {
+                $(".alert-danger").show(), t.errorList.length && $('#myTab1 a[href="#' + $(t.errorList[0].element).closest(".tab-pane").attr("id") + '"]').tab("show")
             }
-        });
-
-    };
-
-    this.ajax = function () {
-
-        return new Promise(function (resolve, reject) {
-
+        })
+    }, this.ajax = function () {
+        return new Promise(function (e, t) {
             $.ajax({
-                url: url,
-                method: method,
-                data: data,
-                success: function (response) {
-                    resolve(response)
-                },
-                errors: function (response) {
-                    reject(response);
+                url: url, method: method, data: data, success: function (t) {
+                    e(t)
+                }, errors: function (e) {
+                    t(e)
                 }
-            });
-
-        });
-
+            })
+        })
+    }, this.redirect = function (e) {
+        if (e) return location.href = e
     }
-
-    this.redirect = function (url) {
-
-        if(url) {
-            return location.href = url;
-        }
-
-
-
-    };
-
-};
-
-var support = new supportHelper();
-
-var field   = new fieldValue();
-
-
-
-
-
-
-
-
-
-
-
-
+}, support = new supportHelper, field = new fieldValue;
