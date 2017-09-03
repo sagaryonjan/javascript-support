@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form>
+    <input type="email" name="email" id="email" placeholder="Email" >
+    <input type="text" name="name" id="name">
+    <input type="submit" id="save" value="Save">
+</form>
+
+
+<script>
+    if (!window.jQuery) {
+        document.write('<script src="libs/jquery-2.1.1.min.js"><\/script>');
+    }
+</script>
+
+
+<script>
+    if (!window.jQuery.ui) {
+        document.write('<script src="libs/jquery-ui-1.10.3.min.js"><\/script>');
+    }
+
+
+
+</script>
+
+
+
+<!-- Initialize Require library -->
+<script src="plugins/jquery-validate/jquery.validate.min.js"></script>
+<!-- Initialize Require library -->
+
+<script src="advance-practice-js/practice.js"></script>
+<script src="advance-practice-js/js-promises.js"></script>
+<script>
+
+</script>
+
+<script src="libs/support.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+       $('#save').click(function (e) {
+           e.preventDefault();
+
+           support.searchUrl( 'http::localhost/url' , {
+               'name'        : $('#name').val(),
+               'email'        : $('#email').val(),
+           } );
+       })
+    });
+
+</script>
+
+<!--<script src="real.js"></script>-->
+
+
+</body>
+</html>
